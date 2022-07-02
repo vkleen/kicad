@@ -1,4 +1,4 @@
-if( KICAD_USE_3DCONNEXION )
+if( KICAD_USE_3DCONNEXION AND NOT KICAD_3DCONNEXION_LIBSPNAV )
     add_library(pcbnew_navlib STATIC
 	    "nl_pcbnew_plugin.cpp"
 	    "nl_pcbnew_plugin_impl.cpp"
@@ -23,8 +23,23 @@ if( KICAD_USE_3DCONNEXION )
         $<TARGET_PROPERTY:3DxWare::Navlib,INTERFACE_LINK_LIBRARIES>
         3DxWare::Navlib
     )
+elseif( KICAD_USE_3DCONNEXION AND KICAD_3DCONNEXION_LIBSPNAV )
+    add_library(pcbnew_navlib STATIC
+	    "nl_pcbnew_plugin.cpp"
+	    "nl_pcbnew_plugin_libspnav.cpp"
+    )
+
+    add_dependencies( pcbnew_navlib pcbcommon )
+
+    target_include_directories(pcbnew_navlib PRIVATE
+      $<TARGET_PROPERTY:pcbnew_kiface_objects,INCLUDE_DIRECTORIES>
+      $<TARGET_PROPERTY:libspnav_thread,INCLUDE_DIRECTORIES>
+    )
+    target_link_libraries(pcbnew_navlib
+      libspnav_thread
+    )
 else()
     add_library(pcbnew_navlib STATIC
 	    "nl_pcbnew_plugin.cpp"
     )
-endif(KICAD_USE_3DCONNEXION)
+endif()
