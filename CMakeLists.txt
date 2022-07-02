@@ -163,6 +163,10 @@ option( KICAD_USE_3DCONNEXION
     "Build KiCad with support for 3Dconnexion devices (Currently only for Mac/MSW)"
     OFF )
 
+option( KICAD_3DCONNEXION_LIBSPNAV
+    "Use libspnav on Linux for 3Dconnexion devices"
+    OFF )
+
 cmake_dependent_option( KICAD_WIN32_VERIFY_CODESIGN
     "When enabled, verifies the code signing signature of certain DLLs loaded during runtime."
     OFF "WIN32"
@@ -177,6 +181,9 @@ if( KICAD_USE_3DCONNEXION )
         add_definitions( -DKICAD_USE_3DCONNEXION )
     elseif( APPLE )
         add_definitions( -DKICAD_USE_3DCONNEXION )
+    elseif( KICAD_3DCONNEXION_LIBSPNAV)
+        find_package(spnav REQUIRED) 
+        add_definitions( -DKICAD_USE_3DCONNEXION -DKICAD_3DCONNEXION_LIBSPNAV )
     else()
         remove_definitions( -DKICAD_USE_3DCONNEXION )
     endif()

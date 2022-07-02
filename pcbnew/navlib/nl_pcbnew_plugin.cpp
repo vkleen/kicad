@@ -21,6 +21,14 @@
 #include "nl_pcbnew_plugin.h"
 #if defined( KICAD_USE_3DCONNEXION )
 
+#if defined( KICAD_3DCONNEXION_LIBSPNAV )
+#include "nl_pcbnew_plugin_libspnav.h"
+
+NL_PCBNEW_PLUGIN::NL_PCBNEW_PLUGIN( PCB_DRAW_PANEL_GAL* aViewport ) :
+  m_impl(new NL_PCBNEW_PLUGIN_LIBSPNAV(aViewport))
+{
+}
+#else
 #include "nl_pcbnew_plugin_impl.h"
 
 
@@ -28,6 +36,7 @@ NL_PCBNEW_PLUGIN::NL_PCBNEW_PLUGIN( PCB_DRAW_PANEL_GAL* aViewport ) :
         m_impl( new NL_PCBNEW_PLUGIN_IMPL( aViewport ) )
 {
 }
+#endif
 
 
 NL_PCBNEW_PLUGIN::~NL_PCBNEW_PLUGIN()
