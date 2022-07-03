@@ -33,10 +33,10 @@ elseif( KICAD_USE_3DCONNEXION AND KICAD_3DCONNEXION_LIBSPNAV )
 
     target_include_directories(pcbnew_navlib PRIVATE
       $<TARGET_PROPERTY:pcbnew_kiface_objects,INCLUDE_DIRECTORIES>
-      $<TARGET_PROPERTY:libspnav_thread,INCLUDE_DIRECTORIES>
+      $<TARGET_PROPERTY:spnav_thread,INCLUDE_DIRECTORIES>
     )
     target_link_libraries(pcbnew_navlib
-      libspnav_thread
+      spnav_thread
     )
 else()
     add_library(pcbnew_navlib STATIC
