@@ -11,8 +11,6 @@
 
 #include <spnav.h>
 
-std::atomic_flag spnav_thread_running;
-
 class scope_guard {
 public:
   template<class CB>
@@ -59,6 +57,7 @@ private:
   wxEvtHandler *target;
   std::function<void(spnav_event)> cb;
 } spnav_data;
+std::atomic_flag spnav_thread_running;
 
 static void spnav_thread() {
   scope_guard _{[](){
@@ -82,7 +81,8 @@ static void spnav_thread() {
 }
 
 void spnav_focus(wxEvtHandler *target, std::function<void(spnav_event)> cb) {
-  if (!spnav_thread_running.test_and_set())
+  if (!spnav_thread_running.test_and_set()) {
     std::thread{spnav_thread}.detach();
+  }
   spnav_data.set(target, cb);
 }
