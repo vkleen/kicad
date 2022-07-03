@@ -1,4 +1,4 @@
-if( KICAD_USE_3DCONNEXION )
+if( KICAD_USE_3DCONNEXION AND NOT KICAD_3DCONNEXION_LIBSPNAV )
     add_library(eeschema_navlib STATIC
 	    "nl_schematic_plugin.cpp"
 	    "nl_schematic_plugin_impl.cpp"
@@ -22,6 +22,21 @@ if( KICAD_USE_3DCONNEXION )
     target_link_libraries(eeschema_navlib
         $<TARGET_PROPERTY:3DxWare::Navlib,INTERFACE_LINK_LIBRARIES>
         3DxWare::Navlib
+    )
+elseif( KICAD_USE_3DCONNEXION AND KICAD_3DCONNEXION_LIBSPNAV )
+    add_library(eeschema_navlib STATIC
+	    "nl_schematic_plugin.cpp"
+	    "nl_schematic_plugin_libspnav.cpp"
+    )
+
+    add_dependencies( eeschema_navlib common )
+
+    target_include_directories(eeschema_navlib PRIVATE
+      $<TARGET_PROPERTY:eeschema_kiface_objects,INCLUDE_DIRECTORIES>
+      $<TARGET_PROPERTY:libspnav_thread,INCLUDE_DIRECTORIES>
+    )
+    target_link_libraries(eeschema_navlib
+      libspnav_thread
     )
 else()
     add_library(eeschema_navlib STATIC

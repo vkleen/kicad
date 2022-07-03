@@ -21,12 +21,21 @@
 #include "nl_schematic_plugin.h"
 #if defined( KICAD_USE_3DCONNEXION )
 
+
+#if defined( KICAD_3DCONNEXION_LIBSPNAV )
+#include "nl_schematic_plugin_libspnav.h"
+
+NL_SCHEMATIC_PLUGIN::NL_SCHEMATIC_PLUGIN() : m_impl( new NL_SCHEMATIC_PLUGIN_LIBSPNAV() )
+{
+}
+#else
 #include "nl_schematic_plugin_impl.h"
 
 
 NL_SCHEMATIC_PLUGIN::NL_SCHEMATIC_PLUGIN() : m_impl( new NL_SCHEMATIC_PLUGIN_IMPL() )
 {
 }
+#endif
 
 
 NL_SCHEMATIC_PLUGIN::~NL_SCHEMATIC_PLUGIN()
