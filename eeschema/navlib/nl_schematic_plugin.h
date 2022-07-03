@@ -29,6 +29,7 @@
 // Forward declarations.
 class EDA_DRAW_PANEL_GAL;
 class NL_SCHEMATIC_PLUGIN_IMPL;
+class NL_SCHEMATIC_PLUGIN_LIBSPNAV;
 
 /**
  * The class that implements the public interface to the SpaceMouse plug-in.
@@ -61,7 +62,11 @@ public:
     void SetFocus( bool aFocus );
 
 private:
+    #if defined(KICAD_3DCONNEXION_LIBSPNAV)
+    NL_SCHEMATIC_PLUGIN_LIBSPNAV* m_impl;
+    #else
     NL_SCHEMATIC_PLUGIN_IMPL* m_impl;
+    #endif
 };
 
 #endif // NL_SCHEMATIC_PLUGIN_H_
